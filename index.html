@@ -4,410 +4,226 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Portfolio</title>
-    <meta name="description"
-        content="Portfolio — PHP | HTML | Vue3 | Golang | Ubuntu | Debian | Linux | Computer General" />
-
-    <!-- CDN: Google Fonts, Font Awesome, jQuery -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-yH8f+..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>Severn G.G — Hello World!</title>
+    <meta name="description" content="Severn G.G — Developer pemula. Belajar PHP, HTML, Vue3, Golang, dan Linux." />
 
     <style>
         :root {
-            --bg: #f7f8fa;
-            --card: #ffffff;
-            --muted: #6b7280;
-            --accent: #111827
+            --bg: #0b0f1a;
+            --text: #e8ecf4;
+            --muted: #8b93a7;
         }
 
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
-            font-family: Inter, system-ui, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--accent);
             margin: 0;
-            line-height: 1.5
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 36px auto;
-            padding: 24px
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
-            padding: 20px
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .avatar {
-            width: 64px;
-            height: 64px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #e6eef9, #f3f7fb);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            color: #0f172a
+            background: var(--bg);
+            color: var(--text);
+            font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
         }
 
-        h1 {
-            font-size: 20px;
-            margin: 0
+        /* Cahaya lembut yang bergerak pelan di latar belakang */
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 60vmax;
+            height: 60vmax;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.18;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        p.lead {
-            margin: 6px 0 0;
-            color: var(--muted)
+        body::before {
+            background: #4f7cff;
+            top: -20vmax;
+            left: -15vmax;
+            animation: drift 18s ease-in-out infinite alternate;
         }
 
-        .hero {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 20px;
-            margin-top: 18px
+        body::after {
+            background: #b44fff;
+            bottom: -20vmax;
+            right: -15vmax;
+            animation: drift 22s ease-in-out infinite alternate-reverse;
         }
 
-        .intro {
-            min-height: 160px
+        @keyframes drift {
+            from { transform: translate(0, 0) scale(1); }
+            to   { transform: translate(8vmax, 6vmax) scale(1.15); }
         }
 
-        .buttons {
-            margin-top: 14px
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: #111827;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            margin-right: 8px
-        }
-
-        .btn.ghost {
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid #e6e9ef
-        }
-
-        /* Skills */
-        .skills {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 18px
-        }
-
-        .skill {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #eef2f7;
-            background: #fff
-        }
-
-        .skill .meta {
-            display: flex;
-            align-items: center;
-            gap: 10px
-        }
-
-        .skill .bar {
-            height: 8px;
-            background: #eef2f7;
-            border-radius: 20px;
-            margin-top: 8px;
-            overflow: hidden
-        }
-
-        .skill .progress {
-            height: 100%;
-            width: 0%;
-            border-radius: 20px;
-            background: #111827
-        }
-
-        /* Projects */
-        .projects {
-            margin-top: 20px
-        }
-
-        .filters {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap
-        }
-
-        .filter {
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: #fff;
-            border: 1px solid #e6e9ef;
-            cursor: pointer
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 12px;
-            margin-top: 12px
-        }
-
-        .project {
-            padding: 12px;
-            border-radius: 10px;
-            background: #fff;
-            border: 1px solid #eef2f7
-        }
-
-        .tags {
-            margin-top: 8px;
-            font-size: 13px;
-            color: var(--muted)
-        }
-
-        /* Contact */
-        .contact {
-            margin-top: 20px;
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap
-        }
-
-        .contact .item {
-            flex: 1 1 240px
-        }
-
-        footer {
-            margin-top: 20px;
+        main {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            color: var(--muted);
-            font-size: 14px
+            padding: 48px 24px;
+            max-width: 640px;
         }
 
-        /* Responsive */
-        @media (max-width:880px) {
-            .hero {
-                grid-template-columns: 1fr
-            }
+        /* ===== Hello World! ===== */
+        .hello {
+            font-size: clamp(3rem, 13vw, 7.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin: 0 0 28px;
+            letter-spacing: -0.02em;
+            cursor: default;
+            user-select: none;
+        }
 
-            .avatar {
-                width: 56px;
-                height: 56px
+        .hello .word {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .hello .letter {
+            display: inline-block;
+            /* Warna gradien yang terus bergeser */
+            background: linear-gradient(120deg, #4f7cff, #b44fff, #ff5fa2, #ffb84f, #4f7cff);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            /* Dua animasi: masuk sekali, lalu melambai selamanya */
+            animation:
+                pop-in 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) both,
+                wave 2.6s ease-in-out infinite,
+                shine 8s linear infinite;
+            animation-delay:
+                calc(var(--i) * 70ms),
+                calc(0.8s + var(--i) * 110ms),
+                calc(var(--i) * -300ms);
+            transition: transform 0.2s ease;
+        }
+
+        .hello .letter:hover {
+            transform: translateY(-12px) rotate(-6deg) scale(1.2);
+        }
+
+        @keyframes pop-in {
+            from {
+                opacity: 0;
+                transform: translateY(-60px) rotate(15deg) scale(0.4);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(0) scale(1);
+            }
+        }
+
+        @keyframes wave {
+            0%, 100% { translate: 0 0; }
+            30%      { translate: 0 -0.12em; }
+            60%      { translate: 0 0.04em; }
+        }
+
+        @keyframes shine {
+            to { background-position: 400% 0; }
+        }
+
+        /* ===== Bio ===== */
+        .bio {
+            opacity: 0;
+            animation: fade-up 0.8s ease 1.6s forwards;
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .bio h1 {
+            font-size: 1.3rem;
+            margin: 0 0 8px;
+        }
+
+        .bio p {
+            color: var(--muted);
+            margin: 0 auto 20px;
+            max-width: 46ch;
+            line-height: 1.6;
+        }
+
+        .links a {
+            color: var(--text);
+            text-decoration: none;
+            border: 1px solid #2a3350;
+            border-radius: 999px;
+            padding: 8px 18px;
+            margin: 0 6px;
+            font-size: 0.95rem;
+            display: inline-block;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .links a:hover {
+            background: #1b2338;
+            transform: translateY(-2px);
+        }
+
+        /* Hormati preferensi pengguna yang menonaktifkan animasi */
+        @media (prefers-reduced-motion: reduce) {
+            body::before,
+            body::after,
+            .hello .letter {
+                animation: none;
+            }
+            .hello .letter {
+                opacity: 1;
+            }
+            .bio {
+                animation: none;
+                opacity: 1;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="card">
-            <header>
-                <div class="brand">
-                    <div class="avatar">SG</div>
-                    <div>
-                        <h1><span class="my-name"></span> — Software & Systems</h1>
-                        <p class="lead">Pemula • Belajar: PHP, HTML, Vue3, Golang, Ubuntu/Debian</p>
-                    </div>
-                </div>
-                <div>
-                    <a class="btn" href="#contact">Contact</a>
-                    <a class="btn ghost" href="#projects">Projects</a>
-                </div>
-            </header>
+    <main>
+        <div class="hello" id="hello" aria-label="Hello World!">Hello World!</div>
 
-            <section class="hero">
-                <div class="intro">
-                    <h2 style="margin-top:6px">Halo — saya <span class="my-name"></span></h2>
-                    <p class="lead">Saya masih pemula dalam dunia pemrograman dan Linux. Saya baru mengerjakan 1–2
-                        proyek yang sudah berjalan di lingkungan produksi kecil. Saya terus belajar, dan saya
-                        menggunakan AI sebagai asisten teknis dalam membangun aplikasi.</p>
-
-                    <div class="skills" aria-hidden="false">
-                        <div class="skill" data-skill="Learning" data-pct="77">
-                            <div class="meta"><strong>Menyukai Pemrograman</strong><span
-                                    style="margin-left:auto;color:var(--muted)">77%</span></div>
-                            <div class="bar">
-                                <div class="progress"></div>
-                            </div>
-                        </div>
-                        <div class="skill" data-skill="AI" data-pct="23">
-                            <div class="meta"><strong>Memanfaatkan AI</strong><span
-                                    style="margin-left:auto;color:var(--muted)">23%</span></div>
-                            <div class="bar">
-                                <div class="progress"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="buttons">
-                        <a class="btn" href="/resume.pdf" download>Download Resume</a>
-                        <a class="btn ghost" href="#projects">Lihat Proyek</a>
-                    </div>
-                </div>
-
-                <aside>
-                    <div class="card" style="padding:14px;text-align:center">
-                        <h3 style="margin:0 0 8px 0">Quick Facts</h3>
-                        <p style="margin:0;color:var(--muted)"><strong>Status:</strong> Developer Pemula</p>
-                        <p style="margin:8px 0 0 0;color:var(--muted)"><strong>AI:</strong> Saya menggunakan AI untuk
-                            membantu coding, debugging, dan dokumentasi.</p>
-
-                        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
-                            <a class="btn" href="https://github.com/" target="_blank"><i
-                                    class="fa-brands fa-github"></i> GitHub</a>
-                            <a class="btn ghost" href="#contact">Email</a>
-                        </div>
-                    </div>
-                </aside>
-            </section>
-
-            <section id="projects" class="projects">
-                <h3 style="margin-bottom:8px">Proyek Pilihan</h3>
-                <div class="filters" role="tablist">
-                    <div class="filter" data-filter="all">All</div>
-                    <div class="filter" data-filter="web">Web</div>
-                    <div class="filter" data-filter="backend">Backend</div>
-                    <div class="filter" data-filter="sys">SysAdmin</div>
-                </div>
-
-                <div class="project-grid" aria-live="polite">
-                    <div class="project" data-tags="web,php">
-                        <h4>Portal Anggota (PHP + MySQL)</h4>
-                        <p class="tags">PHP · MySQL · HTML · Bootstrap</p>
-                        <p style="margin-top:8px;color:var(--muted);font-size:14px">Sistem manajemen anggota, modul
-                            laporan jurnal, dan otentikasi role-based.</p>
-                    </div>
-
-                    <div class="project" data-tags="web,vue">
-                        <h4>Dashboard Keuangan (Vue3 + API)</h4>
-                        <p class="tags">Vue3 · Axios · Charting</p>
-                        <p style="margin-top:8px;color:var(--muted);font-size:14px">SPA modern untuk visualisasi
-                            transaksi dan laporan real-time.</p>
-                    </div>
-
-                    <div class="project" data-tags="backend,golang">
-                        <h4>Microservice Pembukuan (Golang)</h4>
-                        <p class="tags">Golang · REST · SQLite / Postgres</p>
-                        <p style="margin-top:8px;color:var(--muted);font-size:14px">Service cepat, concurrent, dan mudah
-                            di-deploy sebagai container.</p>
-                    </div>
-
-                    <div class="project" data-tags="sys,linux">
-                        <h4>Automation Server (Ubuntu / Debian)</h4>
-                        <p class="tags">Bash · Systemd · Ansible</p>
-                        <p style="margin-top:8px;color:var(--muted);font-size:14px">Automasi provisioning, backup, dan
-                            monitoring server produksi.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contact" class="contact">
-                <div class="card item">
-                    <h4>Hubungi Saya</h4>
-                    <p style="color:var(--muted);margin-top:6px">Email: <a
-                            href="mailto:severinusgg@gmail.com">severinusgg@gmail.com</a></p>
-                    <p style="color:var(--muted);margin-top:6px">Lokasi: Indonesia</p>
-                </div>
-
-                <div class="card item">
-                    <h4>Tautan</h4>
-                    <p style="color:var(--muted);margin-top:6px"><a href="https://github.com/"
-                            target="_blank">GitHub</a></p>
-                </div>
-
-            </section>
-
-            <footer>
-                <small>© <span id="year"></span> <span class="my-name"></span> — Built with HTML, jQuery. Clean &
-                    minimal.</small>
-            </footer>
-        </div>
-    </div>
+        <section class="bio">
+            <h1>Severn G.G</h1>
+            <p>Developer pemula dari Indonesia. Sedang belajar PHP, HTML, Vue3, Golang, dan administrasi server
+                Ubuntu/Debian — dengan AI sebagai asisten teknis.</p>
+            <div class="links">
+                <a href="mailto:severinusgg@gmail.com">Email</a>
+                <a href="https://github.com/severn-gg" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+        </section>
+    </main>
 
     <script>
-        // Set year
-        $('#year').text(new Date().getFullYear());
-
-        // Animate skill bars when visible
-        function animateSkills() {
-            $('.skill').each(function () {
-                var pct = $(this).data('pct');
-                $(this).find('.progress').animate({ width: pct + '%' }, 900);
-            });
-        }
-
-        // Simple visibility check
-        function isElementInViewport(el) {
-            var rect = el.getBoundingClientRect();
-            return (
-                rect.top >= 0 && rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
-
-        $(document).ready(function () {
-            // trigger once
-            animateSkills();
-
-            // project filters
-            $('.filter').on('click', function () {
-                var f = $(this).data('filter');
-                $('.filter').removeClass('active');
-                $(this).addClass('active');
-
-                if (f === 'all') {
-                    $('.project').show();
-                } else {
-                    $('.project').each(function () {
-                        var tags = $(this).data('tags').split(',');
-                        if (tags.indexOf(f) !== -1) $(this).show(); else $(this).hide();
-                    });
-                }
-            });
-
-            // small UX: click project to copy title to clipboard
-            $('.project').on('click', function () {
-                var title = $(this).find('h4').text();
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(title).then(function () {
-                        var prev = document.title;
-                        document.title = 'Copied: ' + title;
-                        setTimeout(function () { document.title = prev }, 900);
-                    });
-                }
-            });
-
-        });
-    </script>
-    <script>
-        const MY_NAME = "Severn G.G"; // ubah sesuai kebutuhan
-        $(function () {
-            $(".my-name").text(MY_NAME);
+        // Pecah "Hello World!" menjadi huruf-huruf agar tiap huruf bisa
+        // dianimasikan dengan delay berbeda (diatur lewat variabel CSS --i)
+        const el = document.getElementById('hello');
+        const words = el.textContent.split(' ');
+        el.textContent = '';
+        let i = 0;
+        words.forEach(function (word, w) {
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'word';
+            for (const ch of word) {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = ch;
+                span.style.setProperty('--i', i++);
+                wordSpan.appendChild(span);
+            }
+            el.appendChild(wordSpan);
+            if (w < words.length - 1) el.appendChild(document.createTextNode(' '));
         });
     </script>
 </body>
