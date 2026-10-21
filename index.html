@@ -59,8 +59,13 @@
         }
 
         @keyframes drift {
-            from { transform: translate(0, 0) scale(1); }
-            to   { transform: translate(8vmax, 6vmax) scale(1.15); }
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(8vmax, 6vmax) scale(1.15);
+            }
         }
 
         main {
@@ -116,6 +121,7 @@
                 opacity: 0;
                 transform: translateY(-60px) rotate(15deg) scale(0.4);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) rotate(0) scale(1);
@@ -123,13 +129,25 @@
         }
 
         @keyframes wave {
-            0%, 100% { translate: 0 0; }
-            30%      { translate: 0 -0.12em; }
-            60%      { translate: 0 0.04em; }
+
+            0%,
+            100% {
+                translate: 0 0;
+            }
+
+            30% {
+                translate: 0 -0.12em;
+            }
+
+            60% {
+                translate: 0 0.04em;
+            }
         }
 
         @keyframes shine {
-            to { background-position: 400% 0; }
+            to {
+                background-position: 400% 0;
+            }
         }
 
         /* ===== Bio ===== */
@@ -139,13 +157,28 @@
         }
 
         @keyframes fade-up {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .bio h1 {
             font-size: 1.3rem;
             margin: 0 0 8px;
+        }
+
+        .pro-gif {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
+            border-radius: 12px;
         }
 
         .bio p {
@@ -172,16 +205,47 @@
             transform: translateY(-2px);
         }
 
+        /* ===== Latar belakang ala cmatrix (p5.js) ===== */
+        #matrix {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            /* Blur + redup supaya terasa jauh di belakang konten */
+            filter: blur(0.8px);
+            opacity: 0.85;
+        }
+
+        #matrix canvas {
+            display: block;
+        }
+
+        /* Layer mask di antara matrix dan konten: gelap di tengah, memudar ke tepi */
+        .mask {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at center,
+                    rgba(11, 15, 26, 0.88) 0%,
+                    rgba(11, 15, 26, 0.62) 40%,
+                    rgba(11, 15, 26, 0.3) 100%);
+        }
+
         /* Hormati preferensi pengguna yang menonaktifkan animasi */
         @media (prefers-reduced-motion: reduce) {
+
             body::before,
             body::after,
             .hello .letter {
                 animation: none;
             }
+
             .hello .letter {
                 opacity: 1;
             }
+
             .bio {
                 animation: none;
                 opacity: 1;
@@ -191,12 +255,15 @@
 </head>
 
 <body>
+    <div id="matrix" aria-hidden="true"></div>
+    <div class="mask" aria-hidden="true"></div>
+
     <main>
         <div class="hello" id="hello" aria-label="Hello World!">Hello World!</div>
 
         <section class="bio">
             <h1>Severn G.G</h1>
-            <p>Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis sed odio in diam venenatis consequat. Aliquam et nisl lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec ultrices sem non diam interdum feugiat. Proin faucibus arcu mattis gravida malesuada. Curabitur ut ante quam. Nam a fringilla risus.</p>
+            <img class="pro-gif" src="pro%20gif.gif" alt="Pro gif" width="283" height="200">
             <div class="links">
                 <a href="mailto:severinusgg@gmail.com">Email</a>
                 <a href="https://github.com/severn-gg" target="_blank" rel="noopener noreferrer">GitHub</a>
@@ -204,6 +271,62 @@
         </section>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+    <script>
+        // Hujan karakter ala cmatrix. Tiap kolom punya posisi kepala sendiri;
+        // kepala digambar putih-hijau, jejaknya memudar lewat background semi-transparan.
+        new p5(function (p) {
+            const SIZE = 16;
+            const CHARS = 'ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789';
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let drops = [];
+
+            function reset() {
+                drops = [];
+                for (let c = 0; c < Math.ceil(p.width / SIZE); c++) {
+                    drops.push(Math.floor(p.random(-p.height / SIZE, 0)));
+                }
+                p.background(11, 15, 26);
+            }
+
+            p.setup = function () {
+                p.createCanvas(window.innerWidth, window.innerHeight).parent('matrix');
+                p.frameRate(20);
+                p.textFont('monospace');
+                p.textSize(SIZE);
+                reset();
+                // Pengguna yang mengurangi gerakan: gambar satu frame statis saja
+                if (reduced) {
+                    for (let n = 0; n < 40; n++) p.draw();
+                    p.noLoop();
+                }
+            };
+
+            p.draw = function () {
+                p.noStroke();
+                p.fill(11, 15, 26, 28);
+                p.rect(0, 0, p.width, p.height);
+
+                for (let c = 0; c < drops.length; c++) {
+                    const x = c * SIZE;
+                    const y = drops[c] * SIZE;
+                    const ch = CHARS.charAt(Math.floor(p.random(CHARS.length)));
+                    // Karakter di belakang kepala: hijau; kepala: hijau terang
+                    p.fill(0, 255, 70);
+                    p.text(CHARS.charAt(Math.floor(p.random(CHARS.length))), x, y - SIZE);
+                    p.fill(200, 255, 210);
+                    p.text(ch, x, y);
+                    if (y > p.height && p.random() > 0.975) drops[c] = 0;
+                    drops[c]++;
+                }
+            };
+
+            p.windowResized = function () {
+                p.resizeCanvas(window.innerWidth, window.innerHeight);
+                reset();
+            };
+        });
+    </script>
     <script>
         // Pecah "Hello World!" menjadi huruf-huruf agar tiap huruf bisa
         // dianimasikan dengan delay berbeda (diatur lewat variabel CSS --i)
